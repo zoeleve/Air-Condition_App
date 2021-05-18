@@ -1,0 +1,142 @@
+<html>
+<head>
+<title>ModesFragment.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #6897bb;}
+.s4 { color: #808080;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+ModesFragment.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.airconditionerapp</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.content.Context</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.Intent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.graphics.drawable.ColorDrawable</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.NonNull</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.fragment.app.Fragment</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.fragment.app.FragmentController</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.navigation.NavDirections</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.navigation.Navigation</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.navigation.fragment.NavHostFragment</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.util.TypedValue</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.LayoutInflater</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.ViewGroup</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.TextView</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.google.android.material.snackbar.Snackbar</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">ModesFragment </span><span class="s0">extends </span><span class="s1">Fragment {</span>
+
+    <span class="s0">private static final </span><span class="s1">String EXTRA_MESSAGE = </span><span class="s2">&quot;extra message&quot;</span><span class="s0">;</span>
+    <span class="s0">private static final </span><span class="s1">String DATA = </span><span class="s2">&quot;data&quot;</span><span class="s0">;</span>
+    <span class="s0">int </span><span class="s1">data = </span><span class="s3">20</span><span class="s0">,</span><span class="s1">message</span><span class="s0">;</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">View onCreateView(</span>
+            <span class="s1">LayoutInflater inflater</span><span class="s0">, </span><span class="s1">ViewGroup container</span><span class="s0">,</span>
+            <span class="s1">Bundle savedInstanceState</span>
+    <span class="s1">) {</span>
+        <span class="s1">Intent intent = requireActivity().getIntent()</span><span class="s0">;</span>
+        <span class="s0">if</span><span class="s1">(intent.getExtras()!=</span><span class="s0">null</span><span class="s1">) {</span>
+            <span class="s1">data = intent.getIntExtra(DATA</span><span class="s0">,</span><span class="s3">22</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">message = intent.getIntExtra(EXTRA_MESSAGE</span><span class="s0">, </span><span class="s3">22</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">if</span><span class="s1">(data == </span><span class="s3">22</span><span class="s1">) {</span>
+            <span class="s1">requireContext().getTheme().applyStyle(R.style.default_title_text</span><span class="s0">, true</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">}</span><span class="s0">else if</span><span class="s1">(data == </span><span class="s3">28</span><span class="s1">){</span>
+            <span class="s1">requireContext().getTheme().applyStyle(R.style.medium_title_text</span><span class="s0">, true</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">}</span><span class="s0">else if</span><span class="s1">(data == </span><span class="s3">34</span><span class="s1">){</span>
+            <span class="s1">requireContext().getTheme().applyStyle(R.style.large_title_text</span><span class="s0">, true</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s4">// Inflate the layout for this fragment</span>
+        <span class="s1">View view = inflater.inflate(R.layout.fragment_modes</span><span class="s0">, </span><span class="s1">container</span><span class="s0">, false</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s0">return </span><span class="s1">view</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">onViewCreated(@NonNull View view</span><span class="s0">, </span><span class="s1">Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onViewCreated(view</span><span class="s0">, </span><span class="s1">savedInstanceState)</span><span class="s0">;</span>
+
+        <span class="s0">if</span><span class="s1">(MainActivity.getDark()) {</span>
+            <span class="s1">TextView t = (TextView) view.findViewById(R.id.status)</span><span class="s0">;</span>
+            <span class="s1">t.setTextColor(getResources().getColor(R.color.gray))</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">if</span><span class="s1">(MainActivity.getHelp()) {</span>
+            <span class="s1">Snackbar mySnackbar = Snackbar.make(getActivity().findViewById(R.id.pop_up_message)</span><span class="s0">,</span><span class="s1">R.string.modes_pop_up </span><span class="s0">, </span><span class="s1">Snackbar.LENGTH_LONG)</span><span class="s0">;</span>
+            <span class="s1">mySnackbar.setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE)</span><span class="s0">;</span>
+            <span class="s0">final </span><span class="s1">View v = mySnackbar.getView()</span><span class="s0">;</span>
+            <span class="s1">TextView tv = (TextView) v.findViewById(R.id.snackbar_text)</span><span class="s0">;</span>
+            <span class="s1">tv.setMaxLines(</span><span class="s3">10</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">tv.setTextSize(TypedValue.COMPLEX_UNIT_SP</span><span class="s0">,</span><span class="s1">MainActivity.getFontSize())</span><span class="s0">;</span>
+            <span class="s0">if</span><span class="s1">(MainActivity.getDark()) {</span>
+                <span class="s1">mySnackbar.setBackgroundTint(getResources().getColor(R.color.NavyBlueDark))</span><span class="s0">;</span>
+                <span class="s1">ColorDrawable cd = </span><span class="s0">new </span><span class="s1">ColorDrawable(getResources().getColor(R.color.NavyBlueDark))</span><span class="s0">;</span>
+                <span class="s1">tv.setBackground(cd)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+            <span class="s1">mySnackbar.setText(tv.getText())</span><span class="s0">;</span>
+            <span class="s1">mySnackbar.show()</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s1">view.findViewById(R.id.BackButton).setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View view) {</span>
+                <span class="s1">NavHostFragment.findNavController(ModesFragment.</span><span class="s0">this</span><span class="s1">)</span>
+                        <span class="s1">.navigate(R.id.action_ModesFragment_to_MainFragment)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">view.findViewById(R.id.Cold).setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View view) {</span>
+                <span class="s1">NavHostFragment.findNavController(ModesFragment.</span><span class="s0">this</span><span class="s1">)</span>
+                        <span class="s1">.navigate(R.id.action_ModesFragment_to_ColdFragment)</span><span class="s0">;</span>
+
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">view.findViewById(R.id.Heat).setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View view) {</span>
+                <span class="s1">NavHostFragment.findNavController(ModesFragment.</span><span class="s0">this</span><span class="s1">)</span>
+                        <span class="s1">.navigate(R.id.action_ModesFragment_to_HeatFragment)</span><span class="s0">;</span>
+
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">view.findViewById(R.id.Humid).setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View view) {</span>
+                <span class="s1">NavHostFragment.findNavController(ModesFragment.</span><span class="s0">this</span><span class="s1">)</span>
+                        <span class="s1">.navigate(R.id.action_ModesFragment_to_HumidFragment)</span><span class="s0">;</span>
+
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">view.findViewById(R.id.Air).setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View view) {</span>
+                <span class="s1">NavHostFragment.findNavController(ModesFragment.</span><span class="s0">this</span><span class="s1">)</span>
+                        <span class="s1">.navigate(R.id.action_ModesFragment_to_AirFragment)</span><span class="s0">;</span>
+
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+<span class="s1">}</span></pre>
+</body>
+</html>

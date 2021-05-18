@@ -1,0 +1,701 @@
+<html>
+<head>
+<title>MainActivity.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #6897bb;}
+.s4 { color: #808080;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+MainActivity.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.airconditionerapp</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.annotation.SuppressLint</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.Intent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.graphics.drawable.ColorDrawable</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Build</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.android.material.snackbar.Snackbar</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.annotation.RequiresApi</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.appcompat.app.AppCompatActivity</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.appcompat.widget.Toolbar</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.navigation.fragment.NavHostFragment</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.recyclerview.widget.RecyclerView</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.os.CountDownTimer</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.util.TypedValue</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.Menu</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.MenuItem</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Button</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ImageButton</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.LinearLayout</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.TextView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Toast</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.util.Objects</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">MainActivity </span><span class="s0">extends </span><span class="s1">AppCompatActivity {</span>
+
+    <span class="s0">private static final </span><span class="s1">String EXTRA_MESSAGE = </span><span class="s2">&quot;extra_message&quot;</span><span class="s0">;</span>
+    <span class="s0">private static final </span><span class="s1">String DATA = </span><span class="s2">&quot;data&quot;</span><span class="s0">;</span>
+    <span class="s0">private static final </span><span class="s1">String MODE = </span><span class="s2">&quot;mode&quot;</span><span class="s0">;</span>
+    <span class="s0">private static final </span><span class="s1">String POWER = </span><span class="s2">&quot;power&quot;</span><span class="s0">;</span>
+    <span class="s0">private static final </span><span class="s1">String STATUS = </span><span class="s2">&quot;status&quot;</span><span class="s0">;</span>
+    <span class="s0">private static final </span><span class="s1">String INTESITY = </span><span class="s2">&quot;intensity&quot;</span><span class="s0">;</span>
+    <span class="s0">private static final </span><span class="s1">String TEMP = </span><span class="s2">&quot;temperature&quot;</span><span class="s0">;</span>
+    <span class="s0">private static final </span><span class="s1">String TIME = </span><span class="s2">&quot;time&quot;</span><span class="s0">;</span>
+    <span class="s0">private static final </span><span class="s1">String TIME_LEFT = </span><span class="s2">&quot;time left&quot;</span><span class="s0">;</span>
+    <span class="s0">private static </span><span class="s1">CountDownTimer counter</span><span class="s0">;</span>
+    <span class="s0">private static </span><span class="s1">Boolean help=</span><span class="s0">false,</span><span class="s1">dark=</span><span class="s0">false,</span><span class="s1">power=</span><span class="s0">false;</span>
+    <span class="s0">private static int </span><span class="s1">fontSize = </span><span class="s3">20</span><span class="s0">,</span><span class="s1">temp = </span><span class="s3">0</span><span class="s0">;</span>
+    <span class="s0">public static </span><span class="s1">String status = </span><span class="s0">null,</span><span class="s1">intensity = </span><span class="s0">null,</span><span class="s1">time = </span><span class="s0">null;</span>
+    <span class="s0">int </span><span class="s1">data = </span><span class="s3">22</span><span class="s0">,</span><span class="s1">id = </span><span class="s3">0</span><span class="s0">,</span><span class="s1">message = </span><span class="s3">0</span><span class="s0">,</span><span class="s1">mode = </span><span class="s3">0</span><span class="s0">;</span>
+    <span class="s1">String modeCheck = </span><span class="s0">null;</span>
+    <span class="s1">ImageButton logo</span><span class="s0">;</span>
+    <span class="s1">Toolbar toolbar</span><span class="s0">;</span>
+    <span class="s1">androidx.appcompat.widget.SwitchCompat sw</span><span class="s0">;</span>
+    <span class="s1">Menu m</span><span class="s0">;</span>
+
+    <span class="s0">public static void </span><span class="s1">setHelp(Boolean help) {</span>
+        <span class="s1">MainActivity.help = help</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setFontSize(</span><span class="s0">int </span><span class="s1">fontSize) {</span>
+        <span class="s1">MainActivity.fontSize = fontSize</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">setM(Menu m) {</span>
+        <span class="s0">this</span><span class="s1">.m = m</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public static void </span><span class="s1">setDark(Boolean dark) {</span>
+        <span class="s1">MainActivity.dark = dark</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public static void </span><span class="s1">setPower(Boolean power) {</span>
+        <span class="s1">MainActivity.power = power</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public static void </span><span class="s1">setTemp(</span><span class="s0">int </span><span class="s1">temp) {</span>
+        <span class="s1">MainActivity.temp = temp</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public static void </span><span class="s1">setStatus(String status) {</span>
+        <span class="s1">MainActivity.status = status</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public static void </span><span class="s1">setIntensity(String intensity) {</span>
+        <span class="s1">MainActivity.intensity = intensity</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public static void </span><span class="s1">setTime(String time) {</span>
+        <span class="s1">MainActivity.time = time</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public static </span><span class="s1">Boolean getHelp() {</span>
+        <span class="s0">return </span><span class="s1">help</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public static int </span><span class="s1">getFontSize() {</span>
+        <span class="s0">return </span><span class="s1">fontSize</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">Menu getM() {</span>
+        <span class="s0">return </span><span class="s1">m</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public static </span><span class="s1">Boolean getDark() {</span>
+        <span class="s0">return </span><span class="s1">dark</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public static </span><span class="s1">Boolean getPower() {</span>
+        <span class="s0">return </span><span class="s1">power</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public static int </span><span class="s1">getTemp() {</span>
+        <span class="s0">return </span><span class="s1">temp</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public static </span><span class="s1">String getStatus() {</span>
+        <span class="s0">return </span><span class="s1">status</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public static </span><span class="s1">String getIntensity() {</span>
+        <span class="s0">return </span><span class="s1">intensity</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public static </span><span class="s1">String getTime() {</span>
+        <span class="s0">return </span><span class="s1">time</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public static </span><span class="s1">CountDownTimer getCounter() {</span>
+        <span class="s0">return </span><span class="s1">counter</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">void </span><span class="s1">refreshView(){</span>
+
+        <span class="s0">if </span><span class="s1">(id == R.id.Dark_mode &amp;&amp; !getM().findItem(R.id.Dark_mode).isChecked() &amp;&amp; getM().findItem(R.id.defaultSize).isChecked()){</span>
+            <span class="s1">message = R.id.defaultSize</span><span class="s0">;</span>
+            <span class="s1">mode = </span><span class="s3">0</span><span class="s0">;</span>
+        <span class="s1">}</span><span class="s0">else if </span><span class="s1">(id == R.id.Dark_mode &amp;&amp; !getM().findItem(R.id.Dark_mode).isChecked() &amp;&amp; getM().findItem(R.id.mediumSize).isChecked()){</span>
+            <span class="s1">message = R.id.mediumSize</span><span class="s0">;</span>
+            <span class="s1">mode = </span><span class="s3">0</span><span class="s0">;</span>
+        <span class="s1">}</span><span class="s0">else if </span><span class="s1">(id == R.id.Dark_mode &amp;&amp; !getM().findItem(R.id.Dark_mode).isChecked() &amp;&amp; getM().findItem(R.id.largeSize).isChecked()){</span>
+            <span class="s1">message = R.id.largeSize</span><span class="s0">;</span>
+            <span class="s1">mode = </span><span class="s3">0</span><span class="s0">;</span>
+        <span class="s1">}</span><span class="s0">else if </span><span class="s1">(id == R.id.Dark_mode &amp;&amp; getM().findItem(R.id.Dark_mode).isChecked() &amp;&amp; getM().findItem(R.id.mediumSize).isChecked()){</span>
+            <span class="s1">message = R.id.mediumSize</span><span class="s0">;</span>
+            <span class="s1">mode = R.id.Dark_mode</span><span class="s0">;</span>
+        <span class="s1">}</span><span class="s0">else if </span><span class="s1">(id == R.id.Dark_mode &amp;&amp; getM().findItem(R.id.Dark_mode).isChecked() &amp;&amp; getM().findItem(R.id.largeSize).isChecked()){</span>
+            <span class="s1">message = R.id.largeSize</span><span class="s0">;</span>
+            <span class="s1">mode = R.id.Dark_mode</span><span class="s0">;</span>
+        <span class="s1">}</span><span class="s0">else if </span><span class="s1">(id == R.id.mediumSize &amp;&amp; !getM().findItem(R.id.Dark_mode).isChecked() &amp;&amp; getM().findItem(R.id.mediumSize).isChecked()){</span>
+            <span class="s1">message = R.id.mediumSize</span><span class="s0">;</span>
+            <span class="s1">mode = </span><span class="s3">0</span><span class="s0">;</span>
+        <span class="s1">}</span><span class="s0">else if </span><span class="s1">(id == R.id.largeSize &amp;&amp; !getM().findItem(R.id.Dark_mode).isChecked() &amp;&amp; getM().findItem(R.id.largeSize).isChecked()){</span>
+            <span class="s1">message = R.id.largeSize</span><span class="s0">;</span>
+            <span class="s1">mode = </span><span class="s3">0</span><span class="s0">;</span>
+        <span class="s1">}</span><span class="s0">else if </span><span class="s1">(id == R.id.mediumSize &amp;&amp; getM().findItem(R.id.Dark_mode).isChecked() &amp;&amp; getM().findItem(R.id.mediumSize).isChecked()){</span>
+            <span class="s1">message = R.id.mediumSize</span><span class="s0">;</span>
+            <span class="s1">mode = R.id.Dark_mode</span><span class="s0">;</span>
+        <span class="s1">}</span><span class="s0">else if </span><span class="s1">(id == R.id.largeSize &amp;&amp; getM().findItem(R.id.Dark_mode).isChecked() &amp;&amp; getM().findItem(R.id.largeSize).isChecked()) {</span>
+            <span class="s1">message = R.id.largeSize</span><span class="s0">;</span>
+            <span class="s1">mode = R.id.Dark_mode</span><span class="s0">;</span>
+        <span class="s1">}</span><span class="s0">else if </span><span class="s1">(id == R.id.Dark_mode &amp;&amp; getM().findItem(R.id.Dark_mode).isChecked() &amp;&amp; getM().findItem(R.id.defaultSize).isChecked()){</span>
+            <span class="s1">message = R.id.defaultSize</span><span class="s0">;</span>
+            <span class="s1">mode = R.id.Dark_mode</span><span class="s0">;</span>
+        <span class="s1">}</span><span class="s0">else if </span><span class="s1">(id == R.id.Dark_mode &amp;&amp; getM().findItem(R.id.Dark_mode).isChecked() &amp;&amp; getM().findItem(R.id.mediumSize).isChecked()){</span>
+            <span class="s1">message = R.id.mediumSize</span><span class="s0">;</span>
+            <span class="s1">mode = R.id.Dark_mode</span><span class="s0">;</span>
+        <span class="s1">}</span><span class="s0">else if </span><span class="s1">(id == R.id.Dark_mode &amp;&amp; getM().findItem(R.id.Dark_mode).isChecked() &amp;&amp; getM().findItem(R.id.largeSize).isChecked()) {</span>
+            <span class="s1">message = R.id.largeSize</span><span class="s0">;</span>
+            <span class="s1">mode = R.id.Dark_mode</span><span class="s0">;</span>
+        <span class="s1">}</span><span class="s0">else if </span><span class="s1">(id == R.id.defaultSize &amp;&amp; !getM().findItem(R.id.Dark_mode).isChecked() &amp;&amp; getM().findItem(R.id.defaultSize).isChecked()){</span>
+            <span class="s1">message = R.id.defaultSize</span><span class="s0">;</span>
+            <span class="s1">mode = </span><span class="s3">0</span><span class="s0">;</span>
+        <span class="s1">}</span><span class="s0">else if </span><span class="s1">(id == R.id.mediumSize &amp;&amp; !getM().findItem(R.id.mediumSize).isChecked() &amp;&amp; getM().findItem(R.id.Dark_mode).isChecked()){</span>
+            <span class="s1">message = R.id.defaultSize</span><span class="s0">;</span>
+            <span class="s1">mode = R.id.Dark_mode</span><span class="s0">;</span>
+        <span class="s1">}</span><span class="s0">else if </span><span class="s1">(id == R.id.largeSize &amp;&amp; !getM().findItem(R.id.largeSize).isChecked() &amp;&amp; getM().findItem(R.id.Dark_mode).isChecked()){</span>
+            <span class="s1">message = R.id.defaultSize</span><span class="s0">;</span>
+            <span class="s1">mode = R.id.Dark_mode</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        
+        <span class="s1">Intent intent = getIntent()</span><span class="s0">;</span>
+        <span class="s1">Integer data = getFontSize()</span><span class="s0">;</span>
+        <span class="s1">intent.putExtra(EXTRA_MESSAGE</span><span class="s0">,</span><span class="s1">message)</span><span class="s0">;</span>
+        <span class="s1">intent.putExtra(DATA</span><span class="s0">,</span><span class="s1">data)</span><span class="s0">;</span>
+        <span class="s1">intent.putExtra(MODE</span><span class="s0">,</span><span class="s1">mode)</span><span class="s0">;</span>
+        <span class="s1">intent.putExtra(POWER</span><span class="s0">,</span><span class="s1">power)</span><span class="s0">;</span>
+        <span class="s1">intent.putExtra(STATUS</span><span class="s0">,</span><span class="s1">getStatus())</span><span class="s0">;</span>
+        <span class="s1">intent.putExtra(INTESITY</span><span class="s0">,</span><span class="s1">getIntensity())</span><span class="s0">;</span>
+        <span class="s1">intent.putExtra(TEMP</span><span class="s0">,</span><span class="s1">getTemp())</span><span class="s0">;</span>
+        <span class="s1">intent.putExtra(TIME</span><span class="s0">,</span><span class="s1">getTime())</span><span class="s0">;</span>
+        <span class="s0">if</span><span class="s1">(TimerFragment.getCounter() != </span><span class="s0">null</span><span class="s1">){</span>
+            <span class="s1">intent.putExtra(TIME_LEFT</span><span class="s0">,</span><span class="s1">TimerFragment.getTleft())</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s1">finish()</span><span class="s0">;</span>
+        <span class="s1">startActivity(intent)</span><span class="s0">;</span>
+        <span class="s1">overridePendingTransition(</span><span class="s3">0</span><span class="s0">, </span><span class="s3">0</span><span class="s1">)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@SuppressLint({</span><span class="s2">&quot;ResourceType&quot;</span><span class="s0">, </span><span class="s2">&quot;CutPasteId&quot;</span><span class="s0">, </span><span class="s2">&quot;UseCompatLoadingForDrawables&quot;</span><span class="s0">, </span><span class="s2">&quot;SetTextI18n&quot;</span><span class="s1">})</span>
+    <span class="s1">@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)</span>
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span><span class="s0">;</span>
+
+        <span class="s0">long </span><span class="s1">time_left = </span><span class="s3">0</span><span class="s0">;</span>
+        <span class="s1">Intent intent = getIntent()</span><span class="s0">;</span>
+        <span class="s0">if</span><span class="s1">(intent.getExtras()!=</span><span class="s0">null</span><span class="s1">) {</span>
+            <span class="s1">data = intent.getIntExtra(DATA</span><span class="s0">,</span><span class="s3">22</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">message = intent.getIntExtra(EXTRA_MESSAGE</span><span class="s0">,</span><span class="s3">22</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">mode = intent.getIntExtra(MODE</span><span class="s0">,</span><span class="s3">0</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">power = intent.getBooleanExtra(POWER</span><span class="s0">,false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">time_left = intent.getLongExtra(TIME_LEFT</span><span class="s0">,</span><span class="s3">0</span><span class="s1">)</span><span class="s0">;</span>
+
+            <span class="s0">if</span><span class="s1">(modeCheck != </span><span class="s0">null</span><span class="s1">) {</span>
+                <span class="s0">if </span><span class="s1">(!modeCheck.equals(intent.getStringExtra(STATUS))) {</span>
+                    <span class="s1">setStatus(modeCheck)</span><span class="s0">;</span>
+                <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                    <span class="s1">status = intent.getStringExtra(STATUS)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span><span class="s0">else </span><span class="s1">status = intent.getStringExtra(STATUS)</span><span class="s0">;</span>
+            <span class="s1">intensity = intent.getStringExtra(INTESITY)</span><span class="s0">;</span>
+            <span class="s1">temp = intent.getIntExtra(TEMP</span><span class="s0">,</span><span class="s3">25</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">time = intent.getStringExtra(TIME)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">if</span><span class="s1">(message == R.id.defaultSize || data == </span><span class="s3">22</span><span class="s1">){</span>
+            <span class="s1">message = R.id.defaultSize</span><span class="s0">;</span>
+            <span class="s1">setTheme(R.style.default_title_text)</span><span class="s0">;</span>
+        <span class="s1">}</span><span class="s0">else if</span><span class="s1">(message == R.id.mediumSize || data == </span><span class="s3">28</span><span class="s1">){</span>
+            <span class="s1">setTheme(R.style.medium_title_text)</span><span class="s0">;</span>
+        <span class="s1">}</span><span class="s0">else if </span><span class="s1">(message == R.id.largeSize || data == </span><span class="s3">34</span><span class="s1">){</span>
+            <span class="s1">setTheme(R.style.large_title_text)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s1">setContentView(R.layout.activity_main)</span><span class="s0">;</span>
+
+        <span class="s1">toolbar = findViewById(R.id.toolbar)</span><span class="s0">;</span>
+        <span class="s1">setSupportActionBar(toolbar)</span><span class="s0">;</span>
+        <span class="s1">Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">getSupportActionBar().setDisplayHomeAsUpEnabled(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">getSupportActionBar().setHomeAsUpIndicator(R.mipmap.ic_company_logo_foreground)</span><span class="s0">;</span>
+<span class="s4">//        toolbar.setLogo(R.mipmap.ic_company_logo_foreground);</span>
+        <span class="s1">toolbar.setOverflowIcon(getDrawable(R.drawable.ic_settings_icon_both))</span><span class="s0">;</span>
+
+        <span class="s1">LinearLayout l = findViewById(R.id.linearLayoutInfo)</span><span class="s0">;</span>
+        <span class="s1">LinearLayout l2 = findViewById(R.id.linearLayoutTimer)</span><span class="s0">;</span>
+        <span class="s1">TextView temperature = (TextView) findViewById(R.id.Temp)</span><span class="s0">;</span>
+        <span class="s1">TextView s = (TextView) findViewById(R.id.Status_Type)</span><span class="s0">;</span>
+        <span class="s1">TextView inten = (TextView) findViewById(R.id.intensity)</span><span class="s0">;</span>
+        <span class="s1">TextView t = findViewById(R.id.textOnOff)</span><span class="s0">;</span>
+        <span class="s1">TextView temp = findViewById(R.id.Temp)</span><span class="s0">;</span>
+        <span class="s1">TextView status = findViewById(R.id.Status_Type)</span><span class="s0">;</span>
+        <span class="s1">TextView intensity = findViewById(R.id.intensity)</span><span class="s0">;</span>
+        <span class="s1">sw = findViewById(R.id.PowerSwitch)</span><span class="s0">;</span>
+
+        <span class="s0">if</span><span class="s1">(mode == R.id.Dark_mode){</span>
+            <span class="s1">setTheme(R.style.Theme_AirConditionerApp_MyCustomThemeDark)</span><span class="s0">;</span>
+            <span class="s1">toolbar.setBackgroundColor(R.color.NavyBlue)</span><span class="s0">;</span>
+            <span class="s1">TextView tv = (TextView) findViewById(R.id.textOnOff)</span><span class="s0">;</span>
+            <span class="s1">tv.setTextColor(getResources().getColor(R.color.gray))</span><span class="s0">;</span>
+
+            <span class="s0">if</span><span class="s1">(getIntensity() !=</span><span class="s0">null </span><span class="s1">&amp;&amp; getPower()) {</span>
+                <span class="s1">l.setVisibility(View.VISIBLE)</span><span class="s0">;</span>
+                <span class="s0">if</span><span class="s1">(getTime() != </span><span class="s0">null</span><span class="s1">){</span>
+                    <span class="s1">l2.setVisibility(View.VISIBLE)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+
+                <span class="s1">temperature.setText(getTemp() + getResources().getString(R.string.celcius))</span><span class="s0">;</span>
+                <span class="s0">if </span><span class="s1">(getStatus().equals(</span><span class="s2">&quot;heat&quot;</span><span class="s1">)) {</span>
+                    <span class="s1">s.setBackground(getDrawable(R.drawable.heat_ic))</span><span class="s0">;</span>
+                <span class="s1">} </span><span class="s0">else if </span><span class="s1">(getStatus().equals(</span><span class="s2">&quot;cold&quot;</span><span class="s1">)) {</span>
+                    <span class="s1">s.setBackground(getDrawable(R.drawable.cold_ic))</span><span class="s0">;</span>
+                <span class="s1">} </span><span class="s0">else if </span><span class="s1">(getStatus().equals(</span><span class="s2">&quot;humid&quot;</span><span class="s1">)) {</span>
+                    <span class="s1">s.setBackground(getDrawable(R.drawable.humid_ic))</span><span class="s0">;</span>
+                <span class="s1">} </span><span class="s0">else if </span><span class="s1">(getStatus().equals(</span><span class="s2">&quot;air&quot;</span><span class="s1">)) {</span>
+                    <span class="s1">s.setBackground(getDrawable(R.drawable.air_ic))</span><span class="s0">;</span>
+                <span class="s1">}</span>
+
+                <span class="s0">if </span><span class="s1">(getIntensity().equals(</span><span class="s2">&quot;high&quot;</span><span class="s1">)) {</span>
+                    <span class="s1">inten.setText(</span><span class="s2">&quot;Υ&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">} </span><span class="s0">else if </span><span class="s1">(getIntensity().equals(</span><span class="s2">&quot;medium&quot;</span><span class="s1">)) {</span>
+                    <span class="s1">inten.setText(</span><span class="s2">&quot;M&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">} </span><span class="s0">else if </span><span class="s1">(getIntensity().equals(</span><span class="s2">&quot;low&quot;</span><span class="s1">)) {</span>
+                    <span class="s1">inten.setText(</span><span class="s2">&quot;Χ&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">} </span><span class="s0">else if </span><span class="s1">(getIntensity().equals(</span><span class="s2">&quot;auto&quot;</span><span class="s1">)) {</span>
+                    <span class="s1">inten.setText(</span><span class="s2">&quot;Α&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+                <span class="s1">temperature.setTextColor(getResources().getColor(R.color.gray))</span><span class="s0">;</span>
+                <span class="s1">s.setTextColor(getResources().getColor(R.color.gray))</span><span class="s0">;</span>
+                <span class="s1">inten.setTextColor(getResources().getColor(R.color.gray))</span><span class="s0">;</span>
+            <span class="s1">}</span>
+
+            <span class="s0">if</span><span class="s1">(getTime() != </span><span class="s0">null </span><span class="s1">&amp;&amp; getPower()){</span>
+                <span class="s1">l2.setVisibility(View.VISIBLE)</span><span class="s0">;</span>
+                <span class="s1">TextView time = (TextView) findViewById(R.id.time)</span><span class="s0">;</span>
+                <span class="s1">TextView icon = (TextView) findViewById(R.id.Icon)</span><span class="s0">;</span>
+
+                <span class="s1">icon.setBackground(getDrawable(R.drawable.timer_ic))</span><span class="s0">;</span>
+                <span class="s1">time.setText(MainActivity.getTime())</span><span class="s0">;</span>
+                <span class="s1">time.setTextColor(getResources().getColor(R.color.gray))</span><span class="s0">;</span>
+            <span class="s1">}</span>
+
+            <span class="s0">if</span><span class="s1">(time_left != </span><span class="s3">0  </span><span class="s1">&amp;&amp; getPower()){</span>
+                <span class="s1">l2.setVisibility(View.VISIBLE)</span><span class="s0">;</span>
+                <span class="s1">TextView time = (TextView) findViewById(R.id.time)</span><span class="s0">;</span>
+                <span class="s1">TextView icon = (TextView) findViewById(R.id.Icon)</span><span class="s0">;</span>
+
+                <span class="s1">counter = </span><span class="s0">new </span><span class="s1">CountDownTimer(time_left</span><span class="s0">, </span><span class="s3">1000</span><span class="s1">) {</span>
+
+                    <span class="s1">@SuppressLint(</span><span class="s2">&quot;SetTextI18n&quot;</span><span class="s1">)</span>
+                    <span class="s0">public void </span><span class="s1">onTick(</span><span class="s0">long </span><span class="s1">millisUntilFinished) {</span>
+                        <span class="s0">long </span><span class="s1">Hours = millisUntilFinished / (</span><span class="s3">60 </span><span class="s1">* </span><span class="s3">60 </span><span class="s1">* </span><span class="s3">1000</span><span class="s1">) % </span><span class="s3">24</span><span class="s0">;</span>
+                        <span class="s0">long </span><span class="s1">Minutes = millisUntilFinished / (</span><span class="s3">60 </span><span class="s1">* </span><span class="s3">1000</span><span class="s1">) % </span><span class="s3">60</span><span class="s0">;</span>
+                        <span class="s0">long </span><span class="s1">Seconds = millisUntilFinished / </span><span class="s3">1000 </span><span class="s1">% </span><span class="s3">60</span><span class="s0">;</span>
+
+                        <span class="s1">time.setText(Hours + </span><span class="s2">&quot; : &quot; </span><span class="s1">+ Minutes + </span><span class="s2">&quot; : &quot; </span><span class="s1">+ Seconds)</span><span class="s0">;</span>
+                        <span class="s1">time.setTextColor(getResources().getColor(R.color.gray))</span><span class="s0">;</span>
+                        <span class="s1">TimerFragment.setTleft(millisUntilFinished)</span><span class="s0">;</span>
+
+                        <span class="s1">icon.setBackground(getDrawable(R.drawable.timer_ic))</span><span class="s0">;</span>
+
+                        <span class="s0">if</span><span class="s1">(MainActivity.getDark()){</span>
+                            <span class="s1">time.setTextColor(getResources().getColor(R.color.gray))</span><span class="s0">;</span>
+                        <span class="s1">}</span>
+                    <span class="s1">}</span>
+
+                    <span class="s0">public void </span><span class="s1">onFinish() {</span>
+                        <span class="s1">time.setText(</span><span class="s2">&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">icon.setBackground(</span><span class="s0">null</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+
+                <span class="s1">}.start()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+
+        <span class="s1">}</span><span class="s0">else</span><span class="s1">{</span>
+            <span class="s1">setTheme(R.style.Theme_AirConditionerApp_MyCustomTheme)</span><span class="s0">;</span>
+            <span class="s0">if</span><span class="s1">(getIntensity() != </span><span class="s0">null </span><span class="s1">&amp;&amp; getPower()) {</span>
+                <span class="s1">l.setVisibility(View.VISIBLE)</span><span class="s0">;</span>
+                <span class="s0">if</span><span class="s1">(getTime() != </span><span class="s0">null</span><span class="s1">){</span>
+                    <span class="s1">l2.setVisibility(View.VISIBLE)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+
+                <span class="s1">temperature.setText(String.valueOf(getTemp()) + getResources().getString(R.string.celcius))</span><span class="s0">;</span>
+                <span class="s0">if </span><span class="s1">(getStatus().equals(</span><span class="s2">&quot;heat&quot;</span><span class="s1">)) {</span>
+                    <span class="s1">s.setBackground(getDrawable(R.drawable.heat_ic))</span><span class="s0">;</span>
+                <span class="s1">} </span><span class="s0">else if </span><span class="s1">(getStatus().equals(</span><span class="s2">&quot;cold&quot;</span><span class="s1">)) {</span>
+                    <span class="s1">s.setBackground(getDrawable(R.drawable.cold_ic))</span><span class="s0">;</span>
+                <span class="s1">} </span><span class="s0">else if </span><span class="s1">(getStatus().equals(</span><span class="s2">&quot;humid&quot;</span><span class="s1">)) {</span>
+                    <span class="s1">s.setBackground(getDrawable(R.drawable.humid_ic))</span><span class="s0">;</span>
+                <span class="s1">} </span><span class="s0">else if </span><span class="s1">(getStatus().equals(</span><span class="s2">&quot;air&quot;</span><span class="s1">)) {</span>
+                    <span class="s1">s.setBackground(getDrawable(R.drawable.air_ic))</span><span class="s0">;</span>
+                <span class="s1">}</span>
+
+                <span class="s0">if </span><span class="s1">(getIntensity().equals(</span><span class="s2">&quot;high&quot;</span><span class="s1">)) {</span>
+                    <span class="s1">inten.setText(</span><span class="s2">&quot;Υ&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">} </span><span class="s0">else if </span><span class="s1">(getIntensity().equals(</span><span class="s2">&quot;medium&quot;</span><span class="s1">)) {</span>
+                    <span class="s1">inten.setText(</span><span class="s2">&quot;M&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">} </span><span class="s0">else if </span><span class="s1">(getIntensity().equals(</span><span class="s2">&quot;low&quot;</span><span class="s1">)) {</span>
+                    <span class="s1">inten.setText(</span><span class="s2">&quot;Χ&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">} </span><span class="s0">else if </span><span class="s1">(getIntensity().equals(</span><span class="s2">&quot;auto&quot;</span><span class="s1">)) {</span>
+                    <span class="s1">inten.setText(</span><span class="s2">&quot;Α&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+
+            <span class="s0">if</span><span class="s1">(getTime() != </span><span class="s0">null </span><span class="s1">&amp;&amp; getPower()){</span>
+                <span class="s1">l2.setVisibility(View.VISIBLE)</span><span class="s0">;</span>
+                <span class="s1">TextView time = (TextView) findViewById(R.id.time)</span><span class="s0">;</span>
+                <span class="s1">TextView icon = (TextView) findViewById(R.id.Icon)</span><span class="s0">;</span>
+
+                <span class="s1">icon.setBackground(getDrawable(R.drawable.timer_ic))</span><span class="s0">;</span>
+                <span class="s1">time.setText(MainActivity.getTime())</span><span class="s0">;</span>
+            <span class="s1">}</span>
+
+            <span class="s0">if</span><span class="s1">(time_left != </span><span class="s3">0 </span><span class="s1">&amp;&amp; getPower()){</span>
+                <span class="s1">l2.setVisibility(View.VISIBLE)</span><span class="s0">;</span>
+                <span class="s1">TextView time = (TextView) findViewById(R.id.time)</span><span class="s0">;</span>
+                <span class="s1">TextView icon = (TextView) findViewById(R.id.Icon)</span><span class="s0">;</span>
+
+                <span class="s1">counter = </span><span class="s0">new </span><span class="s1">CountDownTimer(time_left</span><span class="s0">, </span><span class="s3">1000</span><span class="s1">) {</span>
+
+                    <span class="s1">@SuppressLint(</span><span class="s2">&quot;SetTextI18n&quot;</span><span class="s1">)</span>
+                    <span class="s0">public void </span><span class="s1">onTick(</span><span class="s0">long </span><span class="s1">millisUntilFinished) {</span>
+                        <span class="s0">long </span><span class="s1">Hours = millisUntilFinished / (</span><span class="s3">60 </span><span class="s1">* </span><span class="s3">60 </span><span class="s1">* </span><span class="s3">1000</span><span class="s1">) % </span><span class="s3">24</span><span class="s0">;</span>
+                        <span class="s0">long </span><span class="s1">Minutes = millisUntilFinished / (</span><span class="s3">60 </span><span class="s1">* </span><span class="s3">1000</span><span class="s1">) % </span><span class="s3">60</span><span class="s0">;</span>
+                        <span class="s0">long </span><span class="s1">Seconds = millisUntilFinished / </span><span class="s3">1000 </span><span class="s1">% </span><span class="s3">60</span><span class="s0">;</span>
+
+                        <span class="s1">time.setText(Hours + </span><span class="s2">&quot; : &quot; </span><span class="s1">+ Minutes + </span><span class="s2">&quot; : &quot; </span><span class="s1">+ Seconds)</span><span class="s0">;</span>
+                        <span class="s1">TimerFragment.setTleft(millisUntilFinished)</span><span class="s0">;</span>
+
+                        <span class="s1">icon.setBackground(getDrawable(R.drawable.timer_ic))</span><span class="s0">;</span>
+
+                        <span class="s0">if</span><span class="s1">(MainActivity.getDark()){</span>
+                            <span class="s1">time.setTextColor(getResources().getColor(R.color.gray))</span><span class="s0">;</span>
+                        <span class="s1">}</span>
+                    <span class="s1">}</span>
+
+                    <span class="s0">public void </span><span class="s1">onFinish() {</span>
+                        <span class="s1">time.setText(</span><span class="s2">&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">icon.setBackground(</span><span class="s0">null</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+
+                <span class="s1">}.start()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+
+        <span class="s0">if</span><span class="s1">(getPower()){</span>
+            <span class="s1">sw.setChecked(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">}</span><span class="s0">else </span><span class="s1">sw.setChecked(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s0">if</span><span class="s1">(!sw.isChecked()) {</span>
+            <span class="s1">t.setText(</span><span class="s2">&quot;Εκκίνηση λειτουργίας&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">sw.setBackground(getDrawable(R.drawable.power_off))</span><span class="s0">;</span>
+        <span class="s1">}</span><span class="s0">else</span><span class="s1">{</span>
+            <span class="s1">t.setText(</span><span class="s2">&quot;Τερματισμός λειτουργίας&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">sw.setBackground(getDrawable(R.drawable.power_on))</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+    <span class="s1">}</span>
+
+    <span class="s1">@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)</span>
+    <span class="s1">@SuppressLint({</span><span class="s2">&quot;ResourceAsColor&quot;</span><span class="s0">, </span><span class="s2">&quot;SetTextI18n&quot;</span><span class="s0">, </span><span class="s2">&quot;ResourceType&quot;</span><span class="s0">, </span><span class="s2">&quot;UseCompatLoadingForDrawables&quot;</span><span class="s0">,</span><span class="s2">&quot;WrongViewCast&quot;</span><span class="s0">, </span><span class="s2">&quot;CutPasteId&quot;</span><span class="s1">})</span>
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onStart() {</span>
+
+        <span class="s0">super</span><span class="s1">.onStart()</span><span class="s0">;</span>
+        <span class="s1">TextView t = findViewById(R.id.textOnOff)</span><span class="s0">;</span>
+        <span class="s1">TextView icon = (TextView) findViewById(R.id.Icon)</span><span class="s0">;</span>
+        <span class="s1">Button b = findViewById(R.id.Cancel)</span><span class="s0">;</span>
+        <span class="s1">LinearLayout l = findViewById(R.id.linearLayoutInfo)</span><span class="s0">;</span>
+        <span class="s1">LinearLayout l2 = findViewById(R.id.linearLayoutTimer)</span><span class="s0">;</span>
+
+        <span class="s0">if</span><span class="s1">(getTime() != </span><span class="s0">null</span><span class="s1">){</span>
+            <span class="s1">TimerFragmentAlt.setAlt(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s0">if</span><span class="s1">(TimerFragmentAlt.getAlt()){</span>
+            <span class="s0">if</span><span class="s1">(counter != </span><span class="s0">null</span><span class="s1">){</span>
+                <span class="s1">counter.cancel()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+            <span class="s0">if</span><span class="s1">(counter != </span><span class="s0">null</span><span class="s1">) {</span>
+                <span class="s1">TimerFragment.getCounter().cancel()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+
+        <span class="s1">sw.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener(){</span>
+            <span class="s1">@SuppressLint(</span><span class="s2">&quot;UseCompatLoadingForDrawables&quot;</span><span class="s1">)</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View view) {</span>
+
+                <span class="s0">if</span><span class="s1">(!sw.isChecked()) {</span>
+
+                    <span class="s1">t.setText(</span><span class="s2">&quot;Εκκίνηση λειτουργίας&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">sw.setBackground(getDrawable(R.drawable.power_off))</span><span class="s0">;</span>
+                    <span class="s1">icon.setBackground(</span><span class="s0">null</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">setPower(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">setTime(</span><span class="s0">null</span><span class="s1">)</span><span class="s0">;</span>
+
+                    <span class="s1">l.setVisibility(View.INVISIBLE)</span><span class="s0">;</span>
+                    <span class="s1">l2.setVisibility(View.INVISIBLE)</span><span class="s0">;</span>
+
+                    <span class="s0">if</span><span class="s1">(getCounter() != </span><span class="s0">null</span><span class="s1">){</span>
+                        <span class="s1">getCounter().cancel()</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+                    <span class="s0">if</span><span class="s1">(TimerFragment.getCounter() != </span><span class="s0">null</span><span class="s1">){</span>
+                        <span class="s1">TimerFragment.getCounter().cancel()</span><span class="s0">;</span>
+                        <span class="s1">TimerFragment.setTleft(</span><span class="s3">0</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+
+                    <span class="s0">if</span><span class="s1">(MainActivity.getHelp()) {</span>
+                        <span class="s1">Snackbar mySnackbar = Snackbar.make(findViewById(R.id.pop_up_message)</span><span class="s0">, </span><span class="s1">R.string.main_off_pop_up</span><span class="s0">, </span><span class="s1">Snackbar.LENGTH_LONG)</span><span class="s0">;</span>
+                        <span class="s1">mySnackbar.setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE)</span><span class="s0">;</span>
+                        <span class="s0">final </span><span class="s1">View v = mySnackbar.getView()</span><span class="s0">;</span>
+                        <span class="s1">TextView tv = (TextView) v.findViewById(R.id.snackbar_text)</span><span class="s0">;</span>
+                        <span class="s1">tv.setMaxLines(</span><span class="s3">10</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">tv.setTextSize(TypedValue.COMPLEX_UNIT_SP</span><span class="s0">, </span><span class="s1">getFontSize())</span><span class="s0">;</span>
+                        <span class="s0">if</span><span class="s1">(MainActivity.getDark()) {</span>
+                            <span class="s1">mySnackbar.setBackgroundTint(getResources().getColor(R.color.NavyBlueDark))</span><span class="s0">;</span>
+                            <span class="s1">ColorDrawable cd = </span><span class="s0">new </span><span class="s1">ColorDrawable(getResources().getColor(R.color.NavyBlueDark))</span><span class="s0">;</span>
+                            <span class="s1">tv.setBackground(cd)</span><span class="s0">;</span>
+                        <span class="s1">}</span>
+                        <span class="s1">mySnackbar.setText(tv.getText())</span><span class="s0">;</span>
+                        <span class="s1">mySnackbar.show()</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+
+                <span class="s1">}</span><span class="s0">else</span><span class="s1">{</span>
+                    <span class="s1">TextView temperature = (TextView) findViewById(R.id.Temp)</span><span class="s0">;</span>
+                    <span class="s1">@SuppressLint(</span><span class="s2">&quot;ResourceType&quot;</span><span class="s1">) TextView temperatureUnit = (TextView) findViewById(R.string.celcius)</span><span class="s0">;</span>
+                    <span class="s1">TextView status = (TextView) findViewById(R.id.Status_Type)</span><span class="s0">;</span>
+                    <span class="s1">TextView intensity = (TextView) findViewById(R.id.intensity)</span><span class="s0">;</span>
+
+                    <span class="s1">t.setText(</span><span class="s2">&quot;Τερματισμός λειτουργίας&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">sw.setBackground(getDrawable(R.drawable.power_on))</span><span class="s0">;</span>
+                    <span class="s1">setPower(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">l.setVisibility(View.VISIBLE)</span><span class="s0">;</span>
+
+                    <span class="s1">System.out.println(l.getVisibility() + </span><span class="s2">&quot;mphka&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s0">if</span><span class="s1">(b != </span><span class="s0">null</span><span class="s1">){</span>
+                        <span class="s1">b.setVisibility(View.VISIBLE)</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+                    <span class="s1">System.out.println(getStatus() + getTemp() + getIntensity())</span><span class="s0">;</span>
+                    <span class="s0">if </span><span class="s1">(getStatus() == </span><span class="s0">null</span><span class="s1">) {</span>
+                        <span class="s1">status.setBackground(getResources().getDrawable(R.drawable.cold_ic))</span><span class="s0">;</span>
+                        <span class="s1">temperature.setText(getResources().getString(R.integer.default_temp_cold) + getResources().getString(R.string.celcius))</span><span class="s0">;</span>
+                        <span class="s1">setTemp(</span><span class="s3">26</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">setStatus(</span><span class="s2">&quot;cold&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+                        <span class="s1">intensity.setText(</span><span class="s2">&quot;Α&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">MainActivity.setIntensity(</span><span class="s2">&quot;auto&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+                    <span class="s1">}</span><span class="s0">else if</span><span class="s1">((getStatus().equals(</span><span class="s2">&quot;cold&quot;</span><span class="s1">) &amp;&amp; getIntensity().equals(</span><span class="s2">&quot;auto&quot;</span><span class="s1">) &amp;&amp; getTemp() == </span><span class="s3">26</span><span class="s1">)){</span>
+                        <span class="s1">System.out.println(</span><span class="s2">&quot;why not&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">status.setBackground(getResources().getDrawable(R.drawable.cold_ic))</span><span class="s0">;</span>
+                        <span class="s1">temperature.setText(getResources().getString(R.integer.default_temp_cold) + getResources().getString(R.string.celcius))</span><span class="s0">;</span>
+                        <span class="s1">intensity.setText(</span><span class="s2">&quot;Α&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+
+                    <span class="s0">if</span><span class="s1">(getDark()){</span>
+                        <span class="s1">temperature.setTextColor(getResources().getColor(R.color.gray))</span><span class="s0">;</span>
+                        <span class="s1">status.setTextColor(getResources().getColor(R.color.gray))</span><span class="s0">;</span>
+                        <span class="s1">intensity.setTextColor(getResources().getColor(R.color.gray))</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+
+                    <span class="s0">if</span><span class="s1">(MainActivity.getHelp()) {</span>
+                        <span class="s1">Snackbar mySnackbar = Snackbar.make(findViewById(R.id.pop_up_message)</span><span class="s0">, </span><span class="s1">R.string.main_on_pop_up</span><span class="s0">, </span><span class="s1">Snackbar.LENGTH_LONG)</span><span class="s0">;</span>
+                        <span class="s1">mySnackbar.setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE)</span><span class="s0">;</span>
+                        <span class="s0">final </span><span class="s1">View v = mySnackbar.getView()</span><span class="s0">;</span>
+                        <span class="s1">TextView tv = (TextView) v.findViewById(R.id.snackbar_text)</span><span class="s0">;</span>
+                        <span class="s1">tv.setMaxLines(</span><span class="s3">10</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">tv.setTextSize(TypedValue.COMPLEX_UNIT_SP</span><span class="s0">, </span><span class="s1">getFontSize())</span><span class="s0">;</span>
+                        <span class="s0">if</span><span class="s1">(MainActivity.getDark()) {</span>
+                            <span class="s1">mySnackbar.setBackgroundTint(getResources().getColor(R.color.NavyBlueDark))</span><span class="s0">;</span>
+                            <span class="s1">ColorDrawable cd = </span><span class="s0">new </span><span class="s1">ColorDrawable(getResources().getColor(R.color.NavyBlueDark))</span><span class="s0">;</span>
+                            <span class="s1">tv.setBackground(cd)</span><span class="s0">;</span>
+                        <span class="s1">}</span>
+                        <span class="s1">mySnackbar.setText(tv.getText())</span><span class="s0">;</span>
+                        <span class="s1">mySnackbar.show()</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@SuppressLint(</span><span class="s2">&quot;ResourceAsColor&quot;</span><span class="s1">)</span>
+    <span class="s1">@Override</span>
+    <span class="s0">public boolean </span><span class="s1">onCreateOptionsMenu(Menu menu) {</span>
+        <span class="s4">// Inflate the menu; this adds items to the action bar if it is present.</span>
+        <span class="s1">m = menu</span><span class="s0">;</span>
+        <span class="s1">getMenuInflater().inflate(R.menu.menu_main</span><span class="s0">, </span><span class="s1">menu)</span><span class="s0">;</span>
+        <span class="s0">if</span><span class="s1">(getIntent().getExtras()!=</span><span class="s0">null</span><span class="s1">) {</span>
+            <span class="s0">if</span><span class="s1">(mode == R.id.Dark_mode){</span>
+                <span class="s1">getM().findItem(mode).setChecked(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span><span class="s0">else</span><span class="s1">{</span>
+                <span class="s1">getM().findItem(R.id.Dark_mode).setChecked(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+
+            <span class="s0">if</span><span class="s1">(getHelp()){</span>
+                <span class="s1">getM().findItem(R.id.HelpingMess).setChecked(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span><span class="s0">else </span><span class="s1">getM().findItem(R.id.HelpingMess).setChecked(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+
+            <span class="s0">if </span><span class="s1">(message != R.id.defaultSize &amp;&amp; !getM().findItem(message).isChecked()) {</span>
+                <span class="s1">getM().findItem(message).setChecked(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">getM().findItem(R.id.defaultSize).setChecked(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span><span class="s0">else if</span><span class="s1">(message != R.id.defaultSize &amp;&amp; getM().findItem(message).isChecked()){</span>
+                <span class="s1">getM().findItem(R.id.message).setChecked(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">getM().findItem(R.id.defaultSize).setChecked(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span><span class="s0">else if</span><span class="s1">(message != R.id.defaultSize){</span>
+                <span class="s1">getM().findItem(R.id.defaultSize).setChecked(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+        <span class="s0">return true;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)</span>
+    <span class="s1">@SuppressLint({</span><span class="s2">&quot;NonConstantResourceId&quot;</span><span class="s0">, </span><span class="s2">&quot;ResourceType&quot;</span><span class="s1">})</span>
+    <span class="s1">@Override</span>
+    <span class="s0">public boolean </span><span class="s1">onOptionsItemSelected(MenuItem item) {</span>
+        <span class="s4">// Handle action bar item clicks here. The action bar will</span>
+        <span class="s4">// automatically handle clicks on the Home/Up button, so long</span>
+        <span class="s4">// as you specify a parent activity in AndroidManifest.xml.</span>
+
+        <span class="s1">id = item.getItemId()</span><span class="s0">;</span>
+
+        <span class="s0">switch </span><span class="s1">(id){</span>
+            <span class="s0">case </span><span class="s1">android.R.id.home:</span>
+                <span class="s1">toolbar.setNavigationOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+                    <span class="s1">@Override</span>
+                    <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                        <span class="s4">// If condition returns the current fragment</span>
+                        <span class="s0">if</span><span class="s1">(getSupportFragmentManager().getFragments().get(</span><span class="s3">0</span><span class="s1">).isMenuVisible()) {</span>
+                            <span class="s1">TextView temperature = (TextView) findViewById(R.id.Temp)</span><span class="s0">;</span>
+                            <span class="s1">TextView s = (TextView) findViewById(R.id.Status_Type)</span><span class="s0">;</span>
+                            <span class="s1">TextView inten = (TextView) findViewById(R.id.intensity)</span><span class="s0">;</span>
+
+                            <span class="s1">String temp = (String) temperature.getText()</span><span class="s0">;</span>
+                            <span class="s1">temp = temp.replace(</span><span class="s2">&quot;°C&quot;</span><span class="s0">, </span><span class="s2">&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+                            <span class="s0">if</span><span class="s1">(!temp.equals(String.valueOf(getTemp()))){</span>
+                                <span class="s1">setTemp(Integer.parseInt(temp))</span><span class="s0">;</span>
+                            <span class="s1">}</span>
+<span class="s4">//                            else if(!modeCheck.equals(String.valueOf(getStatus()))){</span>
+<span class="s4">//                                setStatus(modeCheck);</span>
+<span class="s4">//                            }</span>
+
+                            <span class="s1">NavHostFragment.findNavController(getSupportFragmentManager().getFragments().get(</span><span class="s3">0</span><span class="s1">))</span>
+                                    <span class="s1">.navigate(R.id.action_Home_Button)</span><span class="s0">;</span>
+                        <span class="s1">}</span>
+                    <span class="s1">}</span>
+                <span class="s1">})</span><span class="s0">;</span>
+                <span class="s0">return true;</span>
+
+            <span class="s0">case </span><span class="s1">R.id.action_settings:</span>
+                <span class="s0">return true;</span>
+
+            <span class="s0">case </span><span class="s1">R.id.Dark_mode:</span>
+                <span class="s0">if</span><span class="s1">(item.isChecked()){</span>
+                    <span class="s1">item.setChecked(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">setDark(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">Toast.makeText(getApplicationContext()</span><span class="s0">,</span><span class="s2">&quot;Απενεργοποιήθηκε το σκούρο θέμα&quot;</span><span class="s0">,</span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                    <span class="s1">refreshView()</span><span class="s0">;</span>
+                <span class="s1">}</span><span class="s0">else </span><span class="s1">{</span>
+                    <span class="s1">item.setChecked(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">setDark(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">Toast.makeText(getApplicationContext()</span><span class="s0">,</span><span class="s2">&quot;Επιλέχθηκε το σκούρο θέμα&quot;</span><span class="s0">,</span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                    <span class="s1">refreshView()</span><span class="s0">;</span>
+                <span class="s1">}</span><span class="s0">return true;</span>
+
+            <span class="s0">case </span><span class="s1">R.id.HelpingMess:</span>
+                <span class="s0">if</span><span class="s1">(item.isChecked()){</span>
+                    <span class="s1">setHelp(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">item.setChecked(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">Toast.makeText(getApplicationContext()</span><span class="s0">,</span><span class="s2">&quot;Απενεργοποιήθηκαν τα βοηθητικά μηνύματα&quot;</span><span class="s0">,</span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                <span class="s1">}</span><span class="s0">else </span><span class="s1">{</span>
+                    <span class="s1">item.setChecked(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">setHelp(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">Toast.makeText(getApplicationContext()</span><span class="s0">,</span><span class="s2">&quot;Επιλέχθηκαν τα βοηθητικά μηνύματα&quot;</span><span class="s0">,</span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                <span class="s1">}</span><span class="s0">return true;</span>
+
+            <span class="s0">case </span><span class="s1">R.id.defaultSize:</span>
+                <span class="s0">if</span><span class="s1">(item.isChecked()){</span>
+                    <span class="s1">item.setChecked(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">Toast.makeText(getApplicationContext()</span><span class="s0">,</span><span class="s2">&quot;Δεν γίνεται να απενεργοποιηθεί η προδιαγεγραμμένη γραμματοσειρά&quot;</span><span class="s0">,</span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                <span class="s1">}</span><span class="s0">else </span><span class="s1">{</span>
+                    <span class="s1">item.setChecked(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">getM().findItem(R.id.mediumSize).setChecked(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">getM().findItem(R.id.largeSize).setChecked(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">setFontSize(</span><span class="s3">22</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">Toast.makeText(getApplicationContext()</span><span class="s0">,</span><span class="s2">&quot;Επιλέχθηκε η προδιαγεγραμμένη γραμματοσειρά&quot;</span><span class="s0">,</span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                    <span class="s1">refreshView()</span><span class="s0">;</span>
+                <span class="s1">} </span><span class="s0">return true;</span>
+
+            <span class="s0">case </span><span class="s1">R.id.mediumSize:</span>
+                <span class="s0">if</span><span class="s1">(item.isChecked()){</span>
+                    <span class="s1">item.setChecked(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">getM().findItem(R.id.defaultSize).setChecked(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">setFontSize(</span><span class="s3">22</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">Toast.makeText(getApplicationContext()</span><span class="s0">,</span><span class="s2">&quot;Απενεργοποιήθηκε η μεσαίου μεγέθους γραμματοσειρά&quot;</span><span class="s0">,</span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                    <span class="s1">refreshView()</span><span class="s0">;</span>
+                <span class="s1">}</span><span class="s0">else </span><span class="s1">{</span>
+                    <span class="s1">item.setChecked(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">getM().findItem(R.id.defaultSize).setChecked(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">getM().findItem(R.id.largeSize).setChecked(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">setFontSize(</span><span class="s3">28</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">Toast.makeText(getApplicationContext()</span><span class="s0">,</span><span class="s2">&quot;Επιλέχθηκε η μεσαίου μεγέθους γραμματοσειρά&quot;</span><span class="s0">,</span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                    <span class="s1">refreshView()</span><span class="s0">;</span>
+                <span class="s1">}</span><span class="s0">return true;</span>
+
+            <span class="s0">case </span><span class="s1">R.id.largeSize:</span>
+                <span class="s0">if</span><span class="s1">(item.isChecked()){</span>
+                    <span class="s1">item.setChecked(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">getM().findItem(R.id.defaultSize).setChecked(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">setFontSize(</span><span class="s3">22</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">Toast.makeText(getApplicationContext()</span><span class="s0">,</span><span class="s2">&quot;Απενεργοποιήθηκε η μεγάλου μεγέθους γραμματοσειρά&quot;</span><span class="s0">,</span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                    <span class="s1">refreshView()</span><span class="s0">;</span>
+                <span class="s1">}</span><span class="s0">else </span><span class="s1">{</span>
+                    <span class="s1">item.setChecked(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">getM().findItem(R.id.defaultSize).setChecked(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">getM().findItem(R.id.mediumSize).setChecked(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">setFontSize(</span><span class="s3">34</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">Toast.makeText(getApplicationContext()</span><span class="s0">,</span><span class="s2">&quot;Επιλέχθηκε η μεγάλου μεγέθους γραμματοσειρά&quot;</span><span class="s0">,</span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                    <span class="s1">refreshView()</span><span class="s0">;</span>
+                <span class="s1">}</span><span class="s0">return true;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">return super</span><span class="s1">.onOptionsItemSelected(item)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+<span class="s1">}</span></pre>
+</body>
+</html>
